@@ -2,28 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Models\Product;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index()
-    {
+    public function index(){
         $products = Product::all();
-        return view('pages.products.index', compact('products'));
+        return view('pages.products', compact('products'));
     }
 
-    public function store(Request $request)
-    {
-        $data = $request->all();
+    public function create(){
+        return view('pages.add-product');
+    }
 
-        if($request->hasFile('image')){
-            $data['image'] = $request->file('image')->store('products','public');
-        }
-
-        Product::create($data);
-
-        return redirect()->back()->with('success','Produk berhasil ditambahkan');
+    public function store(Request $r){
+        Product::create($r->all());
+        return redirect('/products');
     }
 }
